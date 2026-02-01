@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int minimumCost(vector<int>& nums) {
+         int n = nums.size();
+         if(nums.size() == 3){
+             return nums[0]+nums[1]+nums[2];
+         }
+         
+         int smallest1 = INT_MAX;
+         int smallest2 = INT_MAX;
+         for(int i = 1 ; i < n ; i++){
+              if(smallest1 > nums[i]){
+                  smallest2 = smallest1;
+                  smallest1 = nums[i];
+              } else if(smallest2 > nums[i]){
+                    smallest2 = nums[i];
+              }
+         }
+         return nums[0]+smallest1+smallest2;
+
+    }
+};
