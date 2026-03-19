@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int numberOfSubmatrices(vector<vector<char>>& grid) {
+
+        int n = grid.size();
+        int m = grid[0].size();
+        int cnt = 0;
+
+        vector<vector<int>> cumsumX(n, vector<int>(m, 0));
+        vector<vector<int>> cumsumY(n, vector<int>(m, 0));
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+
+                // Step 1: current cell contribution
+                if (grid[i][j] == 'X') cumsumX[i][j] = 1;
+                if (grid[i][j] == 'Y') cumsumY[i][j] = 1;
+
+                // Step 2: prefix build
+                if (i > 0) {
+                    cumsumX[i][j] += cumsumX[i - 1][j];
+                    cumsumY[i][j] += cumsumY[i - 1][j];
+                }
+                if (j > 0) {
+                    cumsumX[i][j] += cumsumX[i][j - 1];
+                    cumsumY[i][j] += cumsumY[i][j - 1];
+                }
+                if (i > 0 && j > 0) {
+                    cumsumX[i][j] -= cumsumX[i - 1][j - 1];
+                    cumsumY[i][j] -= cumsumY[i - 1][j - 1];
+                }
+
+                // Step 3: check condition
+                if (cumsumX[i][j] > 0 && cumsumX[i][j] == cumsumY[i][j]) {
+                    cnt++;
+                }
+            }
+        }
+
+        return cnt;
+    }
+};
